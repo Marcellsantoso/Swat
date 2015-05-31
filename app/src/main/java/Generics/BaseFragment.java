@@ -1,0 +1,193 @@
+package Generics;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.ScrollView;
+
+import java.lang.reflect.Field;
+
+import roboguice.fragment.RoboFragment;
+import swat.imb.com.swat.R;
+
+/**
+ * Created by marcelsantoso on 5/31/15.
+ */
+public abstract class BaseFragment extends RoboFragment implements View.OnClickListener,
+                                                                   AdapterView.OnItemClickListener,
+                                                                   View.OnLongClickListener,
+                                                                   AbsListView.OnScrollListener,
+                                                                   ViewTreeObserver.OnScrollChangedListener,
+                                                                   View.OnTouchListener {
+    private static final Field            sChildFragmentManagerField;
+    private              ScrollView       sv;
+    private              ViewTreeObserver observer;
+    // ================================================================================
+    // Config
+    // ================================================================================
+
+    public abstract int layout();
+
+    public abstract int menuLayout();
+
+    public abstract void setView(View view, Bundle savedInstanceState);
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        int resLayout = menuLayout();
+        if (resLayout > 0)
+            inflater.inflate(menuLayout(), menu);
+
+        if (BaseActivity.isDebugging() && refreshPage())
+            inflater.inflate(R.menu.refresh_white, menu);
+    }
+
+    public boolean refreshPage() {
+        return false;
+    }
+
+    public void onRefreshPage() {
+    }
+
+    // ================================================================================
+    // Fragment
+    // ================================================================================
+    public void clearFragment() {
+        if (getHome() != null)
+            getHome().clearFragment();
+    }
+
+    public void setFragment(Fragment frag) {
+        if (getHome() != null)
+            getHome().setFragment(frag);
+    }
+
+    public void setFragment(Fragment frag, int resParent) {
+        if (getHome() != null)
+            getHome().setFragment(resParent, frag);
+    }
+
+    // ================================================================================
+    // Utilities
+    // ================================================================================
+    // To prevent error in implementing nested fragment
+    static {
+        Field f = null;
+        try {
+            f = Fragment.class.getDeclaredField("mChildFragmentManager");
+            f.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            // Error getting mChildFragmentManager field
+            e.printStackTrace();
+        }
+        sChildFragmentManagerField = f;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (sChildFragmentManagerField != null) {
+            try {
+                sChildFragmentManagerField.set(this, null);
+            } catch (Exception e) {
+                // Error setting mChildFragmentManager field
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public BaseActivity getHome() {
+        return (BaseActivity) getActivity();
+    }
+
+    public void log(String text) {
+        if (BaseActivity.isDebugging())
+            Log.d(BaseActivity.log(), text);
+    }
+
+    public void onBackPressed() {
+        if (getHome() != null)
+            getHome().onBackPressed();
+    }
+
+    public void setToolbarOpacity(int opacity) {
+        // Max opacity will be 255, as per android's code
+        if (opacity > 255)
+            opacity = 255;
+        Toolbar toolbar = getHome().toolbar();
+        if (toolbar != null)
+            toolbar.getBackground().setAlpha(opacity);
+    }
+
+    public void setScrollListener(ScrollView sv) {
+        this.sv = sv;
+
+        sv.setOnTouchListener(this);
+    }
+
+    // ================================================================================
+    // Listeners
+    // ================================================================================
+    @Override
+    public boolean onLongClick(View v) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                         int totalItemCount) {
+        View v = view.getChildAt(0);
+        int scrollY = (v == null) ? 0 : -v.getTop() + view.getFirstVisiblePosition()
+                * v.getHeight();
+
+        setToolbarOpacity(scrollY);
+    }
+
+    @Override
+    public void onScrollChanged() {
+        setToolbarOpacity(sv.getScrollY());
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (observer == null) {
+            observer = sv.getViewTreeObserver();
+            observer.addOnScrollChangedListener(this);
+        } else if (!observer.isAlive()) {
+            observer.removeOnScrollChangedListener(this);
+            observer = sv.getViewTreeObserver();
+            observer.addOnScrollChangedListener(this);
+        }
+
+        return false;
+    }
+}
+

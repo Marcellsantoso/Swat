@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Swat</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Strings -->
+    <string name="loading">Loading…</string>
+    <string name="retry">Retry</string>
+    <string name="refresh">refresh</string>
+</resources>
