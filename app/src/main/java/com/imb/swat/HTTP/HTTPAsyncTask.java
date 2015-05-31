@@ -1,4 +1,4 @@
-package HTTP;
+package com.imb.swat.HTTP;
 
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;

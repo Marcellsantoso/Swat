@@ -1,4 +1,4 @@
-package HTTP;
+package com.imb.swat.HTTP;
 
 import android.util.Log;
 

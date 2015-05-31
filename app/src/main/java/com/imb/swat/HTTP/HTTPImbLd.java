@@ -1,11 +1,11 @@
-package HTTP;
+package com.imb.swat.HTTP;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import org.json.JSONObject;
 
-import Views.LoadingCompound;
+import com.imb.swat.Views.LoadingCompound;
 
 /**
  * Created by marcelsantoso on 5/30/15.

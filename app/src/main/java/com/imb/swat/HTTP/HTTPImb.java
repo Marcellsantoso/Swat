@@ -1,4 +1,4 @@
-package HTTP;
+package com.imb.swat.HTTP;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -41,7 +41,7 @@ public abstract class HTTPImb
     public static final int     CODE_EMPTY_RESPONSE   = 102;
     public static final int     CODE_INVALID_RESPONSE = 103;
     private             boolean IS_DEBUGGING          = true;
-    private             String  LOG                   = "HTTP Log";
+    private             String  LOG                   = "com.imb.swat.HTTP Log";
 
     public HTTPImb(Fragment frag, boolean displayProgress) {
         this.fragment = frag;

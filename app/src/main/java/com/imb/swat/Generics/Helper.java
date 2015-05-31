@@ -1,4 +1,4 @@
-package Generics;
+package com.imb.swat.Generics;
 
 import android.app.Activity;
 import android.content.Context;

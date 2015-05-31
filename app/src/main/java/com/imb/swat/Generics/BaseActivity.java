@@ -1,4 +1,4 @@
-package Generics;
+package com.imb.swat.Generics;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -7,9 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.imb.swat.R;
+
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
-import swat.imb.com.swat.R;
 
 /**
  * Created by marcelsantoso on 5/31/15.

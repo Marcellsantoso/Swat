@@ -1,4 +1,4 @@
-package Views;
+package com.imb.swat.Views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import swat.imb.com.swat.R;
+import com.imb.swat.R;
 
 /**
  * Created by marcelsantoso on 5/30/15.

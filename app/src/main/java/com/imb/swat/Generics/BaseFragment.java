@@ -1,4 +1,4 @@
-package Generics;
+package com.imb.swat.Generics;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,10 +13,11 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ScrollView;
 
+import com.imb.swat.R;
+
 import java.lang.reflect.Field;
 
 import roboguice.fragment.RoboFragment;
-import swat.imb.com.swat.R;
 
 /**
  * Created by marcelsantoso on 5/31/15.

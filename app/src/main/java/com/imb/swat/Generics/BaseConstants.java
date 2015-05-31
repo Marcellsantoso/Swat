@@ -1,4 +1,4 @@
-package Generics;
+package com.imb.swat.Generics;
 
 /**
  * Created by marcelsantoso on 5/31/15.
