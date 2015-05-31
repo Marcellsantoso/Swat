@@ -1,4 +1,4 @@
-package com.imb.swat.Generics;
+package com.imb.swat.generics;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

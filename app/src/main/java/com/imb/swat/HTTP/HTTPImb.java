@@ -1,4 +1,4 @@
-package com.imb.swat.HTTP;
+package com.imb.swat.http;
 
 import android.app.ProgressDialog;
 import android.content.Context;

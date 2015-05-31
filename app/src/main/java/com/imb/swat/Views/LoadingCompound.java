@@ -1,4 +1,4 @@
-package com.imb.swat.Views;
+package com.imb.swat.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;

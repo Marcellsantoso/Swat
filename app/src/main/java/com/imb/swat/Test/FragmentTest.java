@@ -1,9 +1,9 @@
-package com.imb.swat.Test;
+package com.imb.swat.test;
 
 import android.os.Bundle;
 import android.view.View;
 
-import com.imb.swat.Generics.BaseFragment;
+import com.imb.swat.generics.BaseFragment;
 import com.imb.swat.R;
 
 /**

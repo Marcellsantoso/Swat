@@ -4,6 +4,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Font -->
+    <string name="font_normal">RobotoCondensed-Regular.ttf</string>
+    <string name="font_italic">RobotoCondensed-Italic.ttf</string>
+    <string name="font_bold_italic">RobotoCondensed-BoldItalic.ttf</string>
+    <string name="font_bold">RobotoCondensed-Bold.ttf</string>
+
     <!-- Strings -->
     <string name="loading">Loading…</string>
     <string name="retry">Retry</string>

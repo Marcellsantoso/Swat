@@ -1,7 +1,8 @@
-package com.imb.swat.Generics;
+package com.imb.swat.generics;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -11,9 +12,13 @@ import com.imb.swat.R;
 
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
- * Created by marcelsantoso on 5/31/15.
+ * Created by marcelsantoso.
+ * <p/>
+ * 5/31/15
  */
 public abstract class BaseActivity extends RoboActionBarActivity {
     @InjectView(R.id.toolbar)
@@ -21,19 +26,25 @@ public abstract class BaseActivity extends RoboActionBarActivity {
     private int containerId = 0;
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setFont();
         setContentView(layout());
+        setActionBar();
 
-        setFragment(defaultFragment());
+        setContainerId(R.id.fl);
+        if (fragmentSplash() != null)
+            showSplash();
+        else if (fragmentDefault() != null)
+            setFragment(fragmentDefault());
     }
 
     // ================================================================================
     // Config
     // ================================================================================
-    public abstract Fragment defaultFragment();
+    public abstract Fragment fragmentDefault();
 
-    public Fragment splashFragment() {
+    public Fragment fragmentSplash() {
         return null;
     }
 
@@ -43,6 +54,10 @@ public abstract class BaseActivity extends RoboActionBarActivity {
 
     public int bgRes() {
         return 0;
+    }
+
+    public int theme() {
+        return R.style.CustomActionBarTheme;
     }
 
     public String bgUrl() {
@@ -59,6 +74,14 @@ public abstract class BaseActivity extends RoboActionBarActivity {
 
     public static String log() {
         return BaseConstants.LOG;
+    }
+
+    public long splashTimer() {
+        return BaseConstants.TIMER_SPLASH;
+    }
+
+    public String appName() {
+        return getString(R.string.app_name);
     }
 
     // ================================================================================
@@ -88,9 +111,50 @@ public abstract class BaseActivity extends RoboActionBarActivity {
         this.toolbar.setAlpha((float) opaque);
     }
 
+    private void setActionBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(appName());
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbarShow();
+        toolbarOpaque(255);
+    }
+
+    // ================================================================================
+    // Font
+    // ================================================================================
+    public void setFont() {
+        if (!Helper.isEmpty(fontPath()))
+            CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                                                  .setDefaultFontPath(fontPath())
+                                                  .setFontAttrId(R.attr.fontPath)
+                                                  .build());
+    }
+
+    // @Override
+    protected void attachBaseContext(Context newBase) {
+        if (!Helper.isEmpty(fontPath()))
+            super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     // ================================================================================
     // Fragment
     // ================================================================================
+    public void showSplash() {
+        setFragment(fragmentSplash());
+        new CountDownTimer(splashTimer() * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                clearFragment();
+                setFragment(fragmentDefault());
+            }
+        }.start();
+    }
+
     public void setContainerId(int containerId) {
         this.containerId = containerId;
     }
