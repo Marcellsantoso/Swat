@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -31,15 +34,20 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
     private static final Field            sChildFragmentManagerField;
     private              ScrollView       sv;
     private              ViewTreeObserver observer;
-    // ================================================================================
-    // Config
-    // ================================================================================
 
-    public abstract int layout();
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        if (layout() > 0)
+            return inflater.inflate(layout(), container, false);
+        else return null;
+    }
 
-    public abstract int menuLayout();
-
-    public abstract void setView(View view, Bundle savedInstanceState);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setView(view, savedInstanceState);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -50,6 +58,24 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
         if (BaseActivity.isDebugging() && refreshPage())
             inflater.inflate(R.menu.refresh_white, menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_refresh) {
+            onRefreshPage();
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
+    }
+
+    // ================================================================================
+    // Config
+    // ================================================================================
+    public abstract int layout();
+
+    public abstract int menuLayout();
+
+    public abstract void setView(View view, Bundle savedInstanceState);
 
     public boolean refreshPage() {
         return false;

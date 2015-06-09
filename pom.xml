@@ -1,0 +1,6 @@
+<dependency>
+    <groupId>com.imb.swat</groupId>
+    <artifactId>android</artifactId>
+    <version>1</version>
+    <scope>provided</scope>
+</dependency>

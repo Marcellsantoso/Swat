@@ -1,6 +1,5 @@
 package com.imb.swat.generics;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import com.imb.swat.R;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by marcelsantoso.
@@ -132,10 +130,10 @@ public abstract class BaseActivity extends RoboActionBarActivity {
     }
 
     // @Override
-    protected void attachBaseContext(Context newBase) {
-        if (!Helper.isEmpty(fontPath()))
-            super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+    //    protected void attachBaseContext(Context newBase) {
+    //        if (!Helper.isEmpty(fontPath()))
+    //            super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    //    }
 
     // ================================================================================
     // Fragment
