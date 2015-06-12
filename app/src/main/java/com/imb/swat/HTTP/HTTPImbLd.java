@@ -3,9 +3,9 @@ package com.imb.swat.http;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
-import org.json.JSONObject;
-
 import com.imb.swat.views.LoadingCompound;
+
+import org.json.JSONObject;
 
 /**
  * Created by marcelsantoso on 5/30/15.
@@ -19,10 +19,19 @@ public abstract class HTTPImbLd extends HTTPImb {
     }
 
     @Override
+    public void onFail(int code, String message) {
+        if (ld == null)
+            super.onFail(code, message);
+        else
+            ld.showError("", message);
+    }
+
+    @Override
     public JSONObject handleResponse(Response response, boolean shouldDisplayDialog, Context context) {
         if (response != null) {
             JSONObject json = response.getContent();
             if (response.getStatusCode() == STATUS_SUCCESS) {
+                ld.hide();
                 return json;
             } else if (response.getStatusCode() == STATUS_TIMEOUT) {
                 if (shouldDisplayDialog && context != null) {
@@ -46,13 +55,5 @@ public abstract class HTTPImbLd extends HTTPImb {
         }
 
         return null;
-    }
-
-    @Override
-    public void onFail(int code, String message) {
-        if (ld == null)
-            super.onFail(code, message);
-        else
-            ld.showError("", message);
     }
 }

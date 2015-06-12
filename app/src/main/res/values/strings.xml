@@ -11,7 +11,37 @@
     <string name="font_bold">RobotoCondensed-Bold.ttf</string>
 
     <!-- Strings -->
-    <string name="loading">Loading…</string>
+    <string name="alert_no_phone">No phone number detected</string>
+    <string name="invalid_credentials">Invalid Credentials</string>
     <string name="retry">Retry</string>
-    <string name="refresh">refresh</string>
+    <string name="network_error">Network Error</string>
+    <string name="no_internet">No Internet connection</string>
+    <string name="unknown_response">Unknown response from server. Please try again later</string>
+    <string name="conn_timeout">We are experiencing high traffic. Sorry for the inconvenience, we should be back in few minutes</string>
+    <string name="conn_fail">Failed to connect to server</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="more">More</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="required_field">Please provide:</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="show_more">Show More</string>
+    <string name="no_more">No More Result</string>
+    <string name="minute">Minute</string>
+    <string name="minutes">Minutes</string>
+    <string name="hour">Hour</string>
+    <string name="hours">Hours</string>
+    <string name="day">Day</string>
+    <string name="days">Days</string>
+    <string name="open_in_browser">Browser</string>
+    <string name="refresh">Refresh</string>
+    <string name="loader_reload">Reload</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="update_success">Update success</string>
+    <string name="title_activity_base_activity_tab">BaseActivityTab</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

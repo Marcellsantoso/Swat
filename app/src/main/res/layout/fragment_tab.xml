@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:actionBarSize"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_below="@android:id/tabs">
+            </FrameLayout>
+
+            <com.imb.swat.views.CustomViewPager
+                android:id="@+id/vpTab"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@android:id/tabcontent">
+            </com.imb.swat.views.CustomViewPager>
+        </RelativeLayout>
+    </TabHost>
+
+</FrameLayout>

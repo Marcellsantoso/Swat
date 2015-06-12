@@ -8,6 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.imb.swat.R;
+import com.imb.swat.helper.Helper;
+import com.imb.swat.helper.Preference;
+import com.imb.swat.helper.UIHelper;
 
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
@@ -22,6 +25,15 @@ public abstract class BaseActivity extends RoboActionBarActivity {
     @InjectView(R.id.toolbar)
     private Toolbar toolbar;
     private int containerId = 0;
+    private Preference pref;
+
+    public static boolean isDebugging() {
+        return BaseConstants.IS_DEBUGGING;
+    }
+
+    public static String log() {
+        return BaseConstants.LOG;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +41,10 @@ public abstract class BaseActivity extends RoboActionBarActivity {
         setFont();
         setContentView(layout());
         setActionBar();
+
+        if (pref == null) {
+            pref = Preference.getInstance(this);
+        }
 
         setContainerId(R.id.fl);
         if (fragmentSplash() != null)
@@ -64,14 +80,6 @@ public abstract class BaseActivity extends RoboActionBarActivity {
 
     public String fontPath() {
         return "";
-    }
-
-    public static boolean isDebugging() {
-        return BaseConstants.IS_DEBUGGING;
-    }
-
-    public static String log() {
-        return BaseConstants.LOG;
     }
 
     public long splashTimer() {
@@ -136,6 +144,13 @@ public abstract class BaseActivity extends RoboActionBarActivity {
     //    }
 
     // ================================================================================
+    // Shared Preference
+    // ================================================================================
+    public Preference getPref() {
+        return this.pref;
+    }
+
+    // ================================================================================
     // Fragment
     // ================================================================================
     public void showSplash() {
@@ -179,7 +194,7 @@ public abstract class BaseActivity extends RoboActionBarActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
             // Hide keyboard by default
-            Helper.hideKeyboard(this);
+            UIHelper.hideKeyboard(this);
         }
     }
 
@@ -199,7 +214,7 @@ public abstract class BaseActivity extends RoboActionBarActivity {
             // setSupportProgressBarIndeterminateVisibility(false);
 
             // Hide keyboard by default when changing fragment
-            Helper.hideKeyboard(this);
+            UIHelper.hideKeyboard(this);
         }
     }
 

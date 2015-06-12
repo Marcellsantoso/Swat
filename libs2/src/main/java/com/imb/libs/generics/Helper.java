@@ -1,4 +1,4 @@
-package com.imb.swat.generics;
+package com.imb.libs.generics;
 
 import android.app.Activity;
 import android.content.Context;

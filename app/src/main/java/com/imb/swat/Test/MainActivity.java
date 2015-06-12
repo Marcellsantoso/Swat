@@ -1,12 +1,10 @@
 package com.imb.swat.test;
 
-import android.support.v4.app.Fragment;
+import com.imb.swat.generics.BaseActivityTab;
 
-import com.imb.swat.generics.BaseActivity;
-
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivityTab {
     @Override
-    public Fragment fragmentDefault() {
-        return new FragmentTest();
+    public String url() {
+        return "http://192.168.1.44:8888/test_listing/test.php";
     }
 }

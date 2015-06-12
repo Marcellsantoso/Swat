@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/White"
+              android:gravity="center"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/loadingContainer"
@@ -17,7 +18,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
-            android:background="#1E88E5" />
+            android:background="#1E88E5"/>
 
         <TextView
             android:id="@+id/textViewLoadingMessage"
@@ -26,7 +27,7 @@
             android:gravity="center"
             android:text="@string/loading"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/DarkGrayTransparent" />
+            android:textColor="@color/DarkGrayTransparent"/>
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +46,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/DarkGrayTransparent"
             android:textIsSelectable="false"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/textViewLoadingErrorMessage"
@@ -59,14 +60,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/DarkGray"
             android:textIsSelectable="false"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/buttonRetry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/retry" />
+            android:text="@string/retry"/>
     </LinearLayout>
 
 </LinearLayout>

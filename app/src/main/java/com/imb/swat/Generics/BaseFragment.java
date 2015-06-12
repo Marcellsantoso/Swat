@@ -2,6 +2,7 @@ package com.imb.swat.generics;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ScrollView;
 
 import com.imb.swat.R;
+import com.imb.swat.helper.Preference;
 
 import java.lang.reflect.Field;
 
@@ -30,8 +32,26 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
                                                                    View.OnLongClickListener,
                                                                    AbsListView.OnScrollListener,
                                                                    ViewTreeObserver.OnScrollChangedListener,
-                                                                   View.OnTouchListener {
+                                                                   View.OnTouchListener,
+                                                                   SwipeRefreshLayout.OnRefreshListener {
     private static final Field            sChildFragmentManagerField;
+
+    // ================================================================================
+    // Utilities
+    // ================================================================================
+    // To prevent error in implementing nested fragment
+    static {
+        Field f = null;
+        try {
+            f = Fragment.class.getDeclaredField("mChildFragmentManager");
+            f.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            // Error getting mChildFragmentManager field
+            e.printStackTrace();
+        }
+        sChildFragmentManagerField = f;
+    }
+
     private              ScrollView       sv;
     private              ViewTreeObserver observer;
 
@@ -44,9 +64,17 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setView(view, savedInstanceState);
+    public void onDetach() {
+        super.onDetach();
+
+        if (sChildFragmentManagerField != null) {
+            try {
+                sChildFragmentManagerField.set(this, null);
+            } catch (Exception e) {
+                // Error setting mChildFragmentManager field
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -66,6 +94,12 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
             return true;
         } else
             return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setView(view, savedInstanceState);
     }
 
     // ================================================================================
@@ -102,36 +136,6 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
             getHome().setFragment(resParent, frag);
     }
 
-    // ================================================================================
-    // Utilities
-    // ================================================================================
-    // To prevent error in implementing nested fragment
-    static {
-        Field f = null;
-        try {
-            f = Fragment.class.getDeclaredField("mChildFragmentManager");
-            f.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            // Error getting mChildFragmentManager field
-            e.printStackTrace();
-        }
-        sChildFragmentManagerField = f;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        if (sChildFragmentManagerField != null) {
-            try {
-                sChildFragmentManagerField.set(this, null);
-            } catch (Exception e) {
-                // Error setting mChildFragmentManager field
-                e.printStackTrace();
-            }
-        }
-    }
-
     public BaseActivity getHome() {
         return (BaseActivity) getActivity();
     }
@@ -161,9 +165,17 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
         sv.setOnTouchListener(this);
     }
 
+    public Preference getPref() {
+        return getHome().getPref();
+    }
+
     // ================================================================================
     // Listeners
     // ================================================================================
+    @Override
+    public void onRefresh() {
+    }
+
     @Override
     public boolean onLongClick(View v) {
         // TODO Auto-generated method stub

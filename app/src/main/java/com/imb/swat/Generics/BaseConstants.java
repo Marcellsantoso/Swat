@@ -18,4 +18,8 @@ public class BaseConstants {
     public static final int     TIMER_SPLASH      = 3;            // in seconds
     public static final int     LIMIT             = 10;
     public static final int     LIMIT_MIN         = 1;
+    // ================================================================================
+    // JSON Keys
+    // ================================================================================
+    public static final String  RESULTS           = "results";
 }
