@@ -9,6 +9,7 @@ public class BeanImb extends Object {
     private int    id;
     private String name, img, imgMultiple, descShort, descLong, phone, email, address, url;
     private double latitude, longitude;
+    private boolean fav;
 
     public String getName() {
         return name;
@@ -115,6 +116,15 @@ public class BeanImb extends Object {
 
     public BeanImb setId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public boolean isFav() {
+        return fav;
+    }
+
+    public BeanImb setFav(boolean fav) {
+        this.fav = fav;
         return this;
     }
 

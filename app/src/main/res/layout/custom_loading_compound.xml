@@ -13,12 +13,13 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        <ProgressBar
             android:id="@+id/progressBarCircularIndetermininate"
+            style="@android:style/Widget.Holo.ProgressBar.Large"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center_horizontal"
-            android:background="#1E88E5"/>
+            android:indeterminate="true"/>
 
         <TextView
             android:id="@+id/textViewLoadingMessage"

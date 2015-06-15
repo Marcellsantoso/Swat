@@ -34,7 +34,7 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
                                                                    ViewTreeObserver.OnScrollChangedListener,
                                                                    View.OnTouchListener,
                                                                    SwipeRefreshLayout.OnRefreshListener {
-    private static final Field            sChildFragmentManagerField;
+    private static final Field sChildFragmentManagerField;
 
     // ================================================================================
     // Utilities
@@ -52,8 +52,8 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
         sChildFragmentManagerField = f;
     }
 
-    private              ScrollView       sv;
-    private              ViewTreeObserver observer;
+    private ScrollView       sv;
+    private ViewTreeObserver observer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,6 +138,10 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
 
     public BaseActivity getHome() {
         return (BaseActivity) getActivity();
+    }
+
+    public BaseActivityTab getHomeTab() {
+        return (BaseActivityTab) getActivity();
     }
 
     public void log(String text) {

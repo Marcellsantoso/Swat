@@ -176,7 +176,7 @@ public class UIHelper {
         // float adjust = paint.measureText(text);
 
         Canvas canvas = new Canvas(bm);
-        int    xPos   = (int) ((bm.getWidth() / 2));
+        int xPos = (bm.getWidth() / 2);
         int yPos = (int) ((bm.getHeight() / 2) - ((paint.descent() + paint
                 .ascent()) / 2));
 
@@ -319,6 +319,16 @@ public class UIHelper {
         } else {
             tv.addTextChangedListener(new TextWatcher() {
                 @Override
+                public void beforeTextChanged(
+                        CharSequence arg0, int arg1, int arg2, int arg3) {
+                }
+
+                @Override
+                public void onTextChanged(
+                        CharSequence arg0, int arg1, int arg2, int arg3) {
+                }
+
+                @Override
                 public void afterTextChanged(Editable arg0) {
 
                     ViewTreeObserver vto = tv.getViewTreeObserver();
@@ -397,16 +407,6 @@ public class UIHelper {
                         }
 
                     });
-                }
-
-                @Override
-                public void beforeTextChanged(
-                        CharSequence arg0, int arg1, int arg2, int arg3) {
-                }
-
-                @Override
-                public void onTextChanged(
-                        CharSequence arg0, int arg1, int arg2, int arg3) {
                 }
 
             });
@@ -497,12 +497,12 @@ public class UIHelper {
     }
 
     public static Bitmap getThumbnail(Activity activity, Uri uri)
-            throws FileNotFoundException, IOException {
+            throws IOException {
         return getThumbnail(activity, uri, Constants.THUMBNAIL_SIZE);
     }
 
     public static Bitmap getThumbnail(Context context, Uri uri, int size)
-            throws FileNotFoundException, IOException {
+            throws IOException {
         InputStream input = context.getContentResolver().openInputStream(uri);
 
         BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
@@ -536,21 +536,6 @@ public class UIHelper {
             return 1;
         else
             return k;
-    }
-
-    public Bitmap getFullBitmap(Activity activity, Uri uri)
-            throws FileNotFoundException, IOException {
-        InputStream input = activity.getContentResolver().openInputStream(uri);
-
-        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-        bitmapOptions.inSampleSize = 1;
-        bitmapOptions.inDither = true;// optional
-        bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// optional
-
-        input = activity.getContentResolver().openInputStream(uri);
-        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-        input.close();
-        return bitmap;
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -595,12 +580,6 @@ public class UIHelper {
         }
 
         return avatar;
-    }
-
-    public interface ImagePreviewListener {
-        public void onYes(File photo);
-
-        public void onShow();
     }
 
     private static AlertDialog showImagePreview(
@@ -810,11 +789,6 @@ public class UIHelper {
         return folder;
     }
 
-    // ================================================================================
-    // DEPRECATED FUNCTIONS
-    // USE ImageViewLoader INSTEAD
-    // ================================================================================
-
     /**
      * Load image from url
      *
@@ -856,7 +830,7 @@ public class UIHelper {
                         img.clearAnimation();
 
                         // Show cross image
-                        img.setImageResource(R.drawable.ic_cross_dark);
+                        img.setImageResource(R.drawable.ic_cross_light);
                     }
                 });
     }
@@ -872,6 +846,11 @@ public class UIHelper {
         // TODO : auto detect theme dark or light
         loadImage(context, url, R.drawable.ic_progress_dark, img);
     }
+
+    // ================================================================================
+    // DEPRECATED FUNCTIONS
+    // USE ImageViewLoader INSTEAD
+    // ================================================================================
 
     /**
      * Load image from resource
@@ -925,7 +904,7 @@ public class UIHelper {
                         img.clearAnimation();
 
                         // Show cross image
-                        img.setImageResource(R.drawable.ic_cross_dark);
+                        img.setImageResource(R.drawable.ic_cross_light);
                     }
                 });
     }
@@ -991,6 +970,11 @@ public class UIHelper {
         v.setVisibility(View.VISIBLE);
         Animation a = new Animation() {
             @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+
+            @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 v.getLayoutParams().height = interpolatedTime == 1
                         ? LayoutParams.WRAP_CONTENT
@@ -998,10 +982,7 @@ public class UIHelper {
                 v.requestLayout();
             }
 
-            @Override
-            public boolean willChangeBounds() {
-                return true;
-            }
+
         };
 
         // 1dp/ms
@@ -1034,10 +1015,6 @@ public class UIHelper {
         v.startAnimation(a);
     }
 
-    // ================================================================================
-    // SwipeRefresh
-    // ================================================================================
-
     @SuppressLint("InlinedApi")
     public static void setRefreshColor(SwipeRefreshLayout sr) {
         sr.setColorSchemeResources(
@@ -1045,5 +1022,30 @@ public class UIHelper {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+    }
+
+    public Bitmap getFullBitmap(Activity activity, Uri uri)
+            throws IOException {
+        InputStream input = activity.getContentResolver().openInputStream(uri);
+
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inSampleSize = 1;
+        bitmapOptions.inDither = true;// optional
+        bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// optional
+
+        input = activity.getContentResolver().openInputStream(uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+        input.close();
+        return bitmap;
+    }
+
+    // ================================================================================
+    // SwipeRefresh
+    // ================================================================================
+
+    public interface ImagePreviewListener {
+        void onYes(File photo);
+
+        void onShow();
     }
 }

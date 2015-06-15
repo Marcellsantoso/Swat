@@ -1,5 +1,7 @@
 package com.imb.swat.helper;
 
+import com.imb.swat.adapter.AdapterList;
+
 /**
  * Created by marcelsantoso.
  * <p/>
@@ -10,9 +12,9 @@ public class HelperList {
         return "{" + Integer.toString(id) + "}";
     }
 
-    public static boolean addToFav(Preference pref, int id) {
+    public static boolean addToFav(AdapterList adapter, int id) {
         boolean isAdded = false;
-        String  data    = pref.getString(Preference.LIST_FAV);
+        String data = Preference.getInstance(adapter.getContext()).getString(Preference.LIST_FAV);
         String  text    = HelperList.parseId(id);
         if (data.contains(text)) {
             data = data.replace(text, "");
@@ -22,7 +24,8 @@ public class HelperList {
             isAdded = true;
         }
 
-        pref.setString(Preference.LIST_FAV, data);
+        Preference.getInstance(adapter.getContext()).setString(Preference.LIST_FAV, data);
+        adapter.reload();
 
         return isAdded;
     }
@@ -30,9 +33,26 @@ public class HelperList {
     public static void addToRecent(Preference pref, int id) {
         String data = pref.getString(Preference.LIST_RECENT);
         String text = HelperList.parseId(id);
+
+
         if (data.contains(text)) {
             data = data.replace(text, "");
+        } else {
+            // Count how many records
+            int lastIndex = 0;
+            int count = 0;
+            while (lastIndex != -1) {
+                lastIndex = data.indexOf("{", lastIndex);
+                if (lastIndex != -1) {
+                    count++;
+                    lastIndex += "{".length();
+                }
+            }
+            if (count > 5) {
+                data = data.substring(0, data.lastIndexOf("{") - 1);
+            }
         }
+
         data = text + data;
 
         pref.setString(Preference.LIST_RECENT, data);

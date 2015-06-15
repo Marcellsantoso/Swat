@@ -16,6 +16,7 @@ public abstract class HTTPImbLd extends HTTPImb {
     public HTTPImbLd(Fragment frag, LoadingCompound ld) {
         super(frag, false);
         this.ld = ld;
+        this.ld.showLoading();
     }
 
     @Override

@@ -1,11 +1,13 @@
 package com.imb.swat.generics;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,54 +45,30 @@ public class FragmentTab extends BaseFragment {
 
     @Override
     public void setView(View view, Bundle savedInstanceState) {
-
         setupTab(view, savedInstanceState);
     }
-
-    public Class<?> tab1() {
-        return FragmentList.class;
-    }
-
-    public Class<?> tab2() {
-        return FragmentRecent.class;
-    }
-
-    public Class<?> tab3() {
-        return FragmentFav.class;
-    }
-
-    public String tab1Text() {
-        return "List";
-    }
-
-    public String tab2Text() {
-        return "Recent";
-    }
-
-    public String tab3Text() {
-        return "Favourites";
-    }
-
-    public int tab() {
-        return R.drawable.tab_indicator_ab_tab_default;
-    }
-
-    public int textColor() {
-        return R.color.White;
-    }
-
+    
     public void setupTab(View view, Bundle savedInstance) {
-        tabsAdapter = new TabsAdapter(this, tabHost, vp);
+        tabsAdapter = new TabsAdapter(this, tabHost, vp) {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(getActivity());
+                Intent                i   = new Intent("TAG_REFRESH");
+                lbm.sendBroadcast(i);
+            }
+        };
 
         tabHost.setup();
-        tabsAdapter.addTab(tabHost.newTabSpec(tab1Text()).setIndicator(tab1Text()),
-                           tab1(), null);
-        tabsAdapter.addTab(tabHost.newTabSpec(tab2Text()).setIndicator(tab2Text()),
-                           tab2(), null);
-        tabsAdapter.addTab(tabHost.newTabSpec(tab3Text()).setIndicator(tab3Text()),
-                           tab3(), null);
+        tabsAdapter.addTab(tabHost.newTabSpec(getHomeTab().tab1Text()).setIndicator(getHomeTab().tab1Text()),
+                           getHomeTab().tab1(), null);
+        tabsAdapter.addTab(tabHost.newTabSpec(getHomeTab().tab2Text()).setIndicator(getHomeTab().tab2Text()),
+                           getHomeTab().tab2(), null);
+        tabsAdapter.addTab(tabHost.newTabSpec(getHomeTab().tab3Text()).setIndicator(getHomeTab().tab3Text()),
+                           getHomeTab().tab3(), null);
 
-        adjustTabHost(tabHost, tab(), textColor());
+        adjustTabHost(tabHost, getHomeTab().tab(), getHomeTab().textColor());
 
         if (savedInstance != null) {
             tabHost.setCurrentTabByTag(savedInstance.getString("tab"));
@@ -161,4 +139,5 @@ public class FragmentTab extends BaseFragment {
             e.printStackTrace();
         }
     }
+
 }
