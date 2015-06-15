@@ -40,19 +40,15 @@ public abstract class BaseActivityTab extends BaseActivity {
     }
 
     public int tab() {
-        return R.drawable.tab_indicator_ab_tab_default;
+        return R.drawable.tab_indicator_swat;
     }
 
-    public int tabBgColor() {
-        return Color.BLACK;
+    public int tabColorBg() {
+        return Color.TRANSPARENT;
     }
 
-    public int tabTextColor() {
+    public int tabColorText() {
         return Color.WHITE;
-    }
-
-    public int textColor() {
-        return R.color.White;
     }
 
     @Override

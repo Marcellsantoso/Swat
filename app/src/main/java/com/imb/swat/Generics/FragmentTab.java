@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.imb.swat.R;
@@ -31,6 +32,8 @@ public class FragmentTab extends BaseFragment {
     private CustomViewPager vp;
     @InjectView(android.R.id.tabhost)
     private TabHost         tabHost;
+    @InjectView(android.R.id.tabs)
+    private TabWidget       tabs;
     private TabsAdapter     tabsAdapter;
 
     @Override
@@ -47,7 +50,7 @@ public class FragmentTab extends BaseFragment {
     public void setView(View view, Bundle savedInstanceState) {
         setupTab(view, savedInstanceState);
     }
-    
+
     public void setupTab(View view, Bundle savedInstance) {
         tabsAdapter = new TabsAdapter(this, tabHost, vp) {
             @Override
@@ -68,7 +71,7 @@ public class FragmentTab extends BaseFragment {
         tabsAdapter.addTab(tabHost.newTabSpec(getHomeTab().tab3Text()).setIndicator(getHomeTab().tab3Text()),
                            getHomeTab().tab3(), null);
 
-        adjustTabHost(tabHost, getHomeTab().tab(), getHomeTab().textColor());
+        adjustTabHost(tabHost, getHomeTab().tab(), getHomeTab().tabColorText());
 
         if (savedInstance != null) {
             tabHost.setCurrentTabByTag(savedInstance.getString("tab"));
@@ -82,7 +85,8 @@ public class FragmentTab extends BaseFragment {
             return;
         }
         try {
-
+            // Set tab color
+            tabs.setBackgroundColor(getHomeTab().tabColorBg());
             for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
                 Drawable d = getActivity().getResources().getDrawable(drawableResId);
 
@@ -92,8 +96,7 @@ public class FragmentTab extends BaseFragment {
                 try {
                     tab = (ViewGroup) mTabHost.getTabWidget().getChildAt(i);
                     t = (TextView) tab.findViewById(android.R.id.title);
-                    t.setTextColor(getActivity().getResources().getColor(
-                            textColorResId));
+                    t.setTextColor(textColorResId);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

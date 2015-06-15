@@ -1,10 +1,14 @@
 package com.imb.swat.generics;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.imb.swat.R;
@@ -117,13 +121,28 @@ public abstract class BaseActivity extends RoboActionBarActivity {
         this.toolbar.setAlpha((float) opaque);
     }
 
+    public int toolbarColorBg() {
+        return Color.BLACK;
+    }
+
+    public int toolbarColorText() {
+        return Color.BLACK;
+    }
+
     private void setActionBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(appName());
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar().setBackgroundColor(toolbarColorBg());
         toolbarShow();
         toolbarOpaque(255);
+
+        // Change actionbar text color
+        Spannable text = new SpannableString(toolbar().getTitle());
+        text.setSpan(new ForegroundColorSpan(toolbarColorText()), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        toolbar().setTitle(text);
+
     }
 
     // ================================================================================
