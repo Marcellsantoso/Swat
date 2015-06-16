@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.imb.swat.Bean.BeanImb;
 import com.imb.swat.R;
 import com.imb.swat.generics.BaseConstants;
+import com.imb.swat.helper.Helper;
 import com.imb.swat.helper.HelperList;
 import com.imb.swat.views.ImageViewLoader;
 
@@ -83,6 +84,7 @@ public abstract class AdapterList
                 JSONObject j = jArr.getJSONObject(i);
                 BeanImb b = new BeanImb();
                 b.setId(j.getInt("id"));
+                b.setRaw(j.toString());
                 if (filter == null || filter.contains(HelperList.parseId(b.getId()))) {
                     b.setName(j.getString("name"));
                     b.setDescShort(j.getString("desc_short"));
@@ -102,6 +104,54 @@ public abstract class AdapterList
                     this.add(b);
                 }
             }
+
+            this.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void convertWithFilterSort(String text, String textFav, String filter) {
+        try {
+            if (Helper.isEmpty(filter) || Helper.isEmpty(text))
+                return;
+
+            this.clear();
+
+            JSONObject json = new JSONObject(text);
+
+            String server = json.getString("server");
+            JSONArray jArr = json.getJSONArray(BaseConstants.RESULTS);
+
+            filter = filter.replace("{", "").replace("}", ",");
+            String[] arr = filter.split(",");
+            for (String id : arr) {
+                for (int i = 0; i < jArr.length(); i++) {
+                    JSONObject j = jArr.getJSONObject(i);
+                    BeanImb b = new BeanImb();
+                    b.setId(j.getInt("id"));
+                    b.setRaw(j.toString());
+                    if (Integer.parseInt(id) == b.getId()) {
+                        b.setName(j.getString("name"));
+                        b.setDescShort(j.getString("desc_short"));
+                        b.setDescLong(j.getString("desc_long"));
+                        b.setLatitude(j.getDouble("latitude"));
+                        b.setLongitude(j.getDouble("longitude"));
+                        b.setPhone(j.getString("phone"));
+                        b.setEmail(j.getString("email"));
+                        b.setAddress(j.getString("address"));
+                        b.setUrl(j.getString("url"));
+                        b.setFav(textFav.contains(HelperList.parseId(b.getId())));
+                        if (j.getString("img_main").length() > 0)
+                            b.setImg(server + j.getString("img_main"));
+                        if (j.getString("img_multiple").length() > 0)
+                            b.setImgMultiple(server + j.getString("img_multiple").replace(";", ";" + server));
+
+                        this.add(b);
+                    }
+                }
+            }
+
 
             this.notifyDataSetChanged();
         } catch (JSONException e) {

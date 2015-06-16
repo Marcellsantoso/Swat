@@ -31,9 +31,9 @@ public class FragmentRecent extends BaseFragmentTab {
         adapter = new AdapterList(getActivity()) {
             @Override
             public void reload() {
-                adapter.convertWithFilter(getHomeTab().getPref().getString(Preference.LIST_DATA),
-                                          getHomeTab().getPref().getString(Preference.LIST_FAV),
-                                          getHomeTab().getPref().getString(Preference.LIST_RECENT));
+                adapter.convertWithFilterSort(getHomeTab().getPref().getString(Preference.LIST_DATA),
+                                              getHomeTab().getPref().getString(Preference.LIST_FAV),
+                                              getHomeTab().getPref().getString(Preference.LIST_RECENT));
             }
         };
         adapter.reload();

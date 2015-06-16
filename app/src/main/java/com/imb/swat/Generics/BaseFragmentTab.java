@@ -71,6 +71,7 @@ public abstract class BaseFragmentTab extends BaseFragment implements AdapterVie
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
         HelperList.addToRecent(getPref(), ((BeanImb) adapter().getItem(position)).getId());
+        setFragment(getHomeTab().fragmentDetails().setData(((BeanImb) adapter().getItem(position))));
     }
 
     @Override

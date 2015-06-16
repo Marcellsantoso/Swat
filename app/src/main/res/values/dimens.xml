@@ -7,9 +7,10 @@
     <dimen name="min_size">48dp</dimen>
     <dimen name="min_size_small">40dp</dimen>
     <dimen name="img_drawer">30dp</dimen>
+    <dimen name="img_cell">70dp</dimen>
+    <dimen name="img_header">180dp</dimen>
     <dimen name="progress_width">50dp</dimen>
     <dimen name="progress_height">50dp</dimen>
-    <dimen name="img_cell">70dp</dimen>
 
     <!-- MARGINS -->
     <dimen name="margin_small">5dp</dimen>

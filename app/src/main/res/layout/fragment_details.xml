@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rlHeader"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/img_header">
+
+                <com.imb.swat.views.ImageViewLoader
+                    android:id="@+id/imgHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/llContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@android:color/black"
+                android:dividerPadding="10dp"
+                android:orientation="horizontal"
+                android:showDividers="middle"
+                android:weightSum="3">
+
+                <ImageButton
+                    android:id="@+id/btnCall"
+                    style="@style/imgBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/min_size"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_phone"/>
+
+                <ImageButton
+                    android:id="@+id/btnEmail"
+                    style="@style/imgBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/min_size"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_email"/>
+
+                <ImageButton
+                    android:id="@+id/btnWeb"
+                    style="@style/imgBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/min_size"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_web"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/textLargeBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/margin_med"
+                    android:text="@string/details"/>
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    style="@style/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

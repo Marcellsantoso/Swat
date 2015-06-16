@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ScrollView;
 
+import com.imb.swat.Bean.BeanImb;
 import com.imb.swat.R;
 import com.imb.swat.helper.Preference;
 
@@ -34,7 +35,22 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
                                                                    ViewTreeObserver.OnScrollChangedListener,
                                                                    View.OnTouchListener,
                                                                    SwipeRefreshLayout.OnRefreshListener {
-    private static final Field sChildFragmentManagerField;
+    private static final Field   sChildFragmentManagerField;
+    private              BeanImb bean;
+
+    public BaseFragment() {
+
+    }
+
+    public BaseFragment setData(BeanImb bean) {
+        this.bean = bean;
+
+        return this;
+    }
+
+    public BeanImb getData() {
+        return this.bean;
+    }
 
     // ================================================================================
     // Utilities
@@ -58,9 +74,14 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (menuLayout() > 0)
+            setHasOptionsMenu(true);
+
         if (layout() > 0)
             return inflater.inflate(layout(), container, false);
         else return null;
+
+
     }
 
     @Override
@@ -99,6 +120,7 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getToolbar().setBackgroundColor(getHomeTab().toolbarColorBg());
         setView(view, savedInstanceState);
     }
 
@@ -149,28 +171,45 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
             Log.d(BaseActivity.log(), text);
     }
 
+    public Preference getPref() {
+        return getHome().getPref();
+    }
+
     public void onBackPressed() {
         if (getHome() != null)
             getHome().onBackPressed();
     }
 
+    // ================================================================================
+    // Toolbar
+    // ================================================================================
     public void setToolbarOpacity(int opacity) {
         // Max opacity will be 255, as per android's code
         if (opacity > 255)
             opacity = 255;
-        Toolbar toolbar = getHome().toolbar();
+        Toolbar toolbar = getToolbar();
         if (toolbar != null)
             toolbar.getBackground().setAlpha(opacity);
+    }
+
+    public Toolbar getToolbar() {
+        if (getHome() != null)
+            return getHome().toolbar();
+        else return null;
+    }
+
+    public void setTitle(String text) {
+        getToolbar().setTitle(text);
+    }
+
+    public void setTitle(int resTitle) {
+        getToolbar().setTitle(resTitle);
     }
 
     public void setScrollListener(ScrollView sv) {
         this.sv = sv;
 
         sv.setOnTouchListener(this);
-    }
-
-    public Preference getPref() {
-        return getHome().getPref();
     }
 
     // ================================================================================

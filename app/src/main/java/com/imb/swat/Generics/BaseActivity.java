@@ -66,6 +66,8 @@ public abstract class BaseActivity extends RoboActionBarActivity {
         return null;
     }
 
+    public abstract Fragment fragmentDetails();
+
     public int layout() {
         return R.layout.activity_base;
     }
@@ -101,9 +103,7 @@ public abstract class BaseActivity extends RoboActionBarActivity {
         return this.toolbar;
     }
 
-    public void toolbarTitle(String title) {
-        this.toolbar.setTitle(title);
-    }
+    public abstract String toolbarTitle();
 
     public void toolbarTitle(int resTitle) {
         this.toolbar.setTitle(resTitle);
@@ -135,6 +135,7 @@ public abstract class BaseActivity extends RoboActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar().setBackgroundColor(toolbarColorBg());
+        toolbar().setTitle(toolbarTitle());
         toolbarShow();
         toolbarOpaque(255);
 
@@ -142,7 +143,6 @@ public abstract class BaseActivity extends RoboActionBarActivity {
         Spannable text = new SpannableString(toolbar().getTitle());
         text.setSpan(new ForegroundColorSpan(toolbarColorText()), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         toolbar().setTitle(text);
-
     }
 
     // ================================================================================

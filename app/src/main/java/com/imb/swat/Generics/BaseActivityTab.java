@@ -13,6 +13,11 @@ public abstract class BaseActivityTab extends BaseActivity {
         return new FragmentTab();
     }
 
+    @Override
+    public BaseFragment fragmentDetails() {
+        return new FragmentDetails();
+    }
+
     public abstract String url();
 
     public Class<?> tab1() {

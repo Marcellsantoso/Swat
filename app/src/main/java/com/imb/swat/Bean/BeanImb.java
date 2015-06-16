@@ -7,7 +7,7 @@ package com.imb.swat.Bean;
  */
 public class BeanImb extends Object {
     private int    id;
-    private String name, img, imgMultiple, descShort, descLong, phone, email, address, url;
+    private String name, img, imgMultiple, descShort, descLong, phone, email, address, url, raw;
     private double latitude, longitude;
     private boolean fav;
 
@@ -125,6 +125,15 @@ public class BeanImb extends Object {
 
     public BeanImb setFav(boolean fav) {
         this.fav = fav;
+        return this;
+    }
+
+    public String getRaw() {
+        return raw;
+    }
+
+    public BeanImb setRaw(String raw) {
+        this.raw = raw;
         return this;
     }
 

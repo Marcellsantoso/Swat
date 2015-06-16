@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <WebView
+        android:id="@+id/wv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize"/>
+
+    <com.imb.swat.views.LoadingCompound
+        android:id="@+id/ld"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/wv"
+        android:background="@color/White"
+        android:clickable="true"
+        android:visibility="visible">
+    </com.imb.swat.views.LoadingCompound>
+
+</RelativeLayout>

@@ -13,9 +13,9 @@ public class HelperList {
     }
 
     public static boolean addToFav(AdapterList adapter, int id) {
-        boolean isAdded = false;
-        String data = Preference.getInstance(adapter.getContext()).getString(Preference.LIST_FAV);
-        String  text    = HelperList.parseId(id);
+        boolean isAdded;
+        String  data = Preference.getInstance(adapter.getContext()).getString(Preference.LIST_FAV);
+        String  text = HelperList.parseId(id);
         if (data.contains(text)) {
             data = data.replace(text, "");
             isAdded = false;
@@ -48,7 +48,7 @@ public class HelperList {
                     lastIndex += "{".length();
                 }
             }
-            if (count > 5) {
+            if (count >= 5) {
                 data = data.substring(0, data.lastIndexOf("{") - 1);
             }
         }

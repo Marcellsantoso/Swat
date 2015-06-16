@@ -7,7 +7,7 @@ import com.imb.swat.generics.BaseActivityTab;
 public class MainActivity extends BaseActivityTab {
     @Override
     public String url() {
-        return "http://192.168.1.45:8888/test_listing/test.php";
+        return "http://192.168.1.49:8888/test_listing/test.php";
     }
 
     @Override
@@ -18,6 +18,11 @@ public class MainActivity extends BaseActivityTab {
     @Override
     public int tabColorText() {
         return Color.parseColor("#456504");
+    }
+
+    @Override
+    public String toolbarTitle() {
+        return "Listing Demo";
     }
 
     @Override
