@@ -48,6 +48,7 @@ public class FragmentTab extends BaseFragment {
 
     @Override
     public void setView(View view, Bundle savedInstanceState) {
+        setTitle(getHome().toolbarTitle());
         setupTab(view, savedInstanceState);
     }
 

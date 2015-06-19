@@ -196,7 +196,15 @@ public abstract class BaseActivity extends RoboActionBarActivity {
     }
 
     public void setFragment(Fragment frag) {
-        setFragment(this.containerId, frag);
+        setFragment(this.containerId, frag, 0, 0);
+    }
+
+    public void setFragment(Fragment frag, int resParent) {
+        setFragment(resParent, frag, 0, 0);
+    }
+
+    public void setFragmentAnim(Fragment frag, int resIn, int resOut) {
+        setFragment(this.containerId, frag, resIn, resOut);
     }
 
     /**
@@ -222,11 +230,18 @@ public abstract class BaseActivity extends RoboActionBarActivity {
      *
      * @param frag
      */
-    public void setFragment(int containerId, Fragment frag) {
+    public void setFragment(int containerId, Fragment frag, int resIn, int resOut) {
         if (containerId > 0) {
-            getSupportFragmentManager().beginTransaction()
-                                       .replace(containerId, frag).addToBackStack(null)
-                                       .commit();
+            if (resIn == 0 && resOut == 0)
+                getSupportFragmentManager().beginTransaction()
+                                           .replace(containerId, frag).addToBackStack(null)
+                                           .commit();
+            else
+                getSupportFragmentManager().beginTransaction()
+                                           .setCustomAnimations(resIn, resOut)
+                                           .replace(containerId, frag).addToBackStack(null)
+                                           .commit();
+
 
             if (getSupportActionBar() != null)
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);

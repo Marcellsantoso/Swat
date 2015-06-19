@@ -8,6 +8,7 @@ public class MainActivity extends BaseActivityTab {
     @Override
     public String url() {
         return "http://192.168.1.48:8888/test_listing/test.php";
+//        return "http://rumah.daftarlokal.com/RumahWS/RumahWS_Model?cmd=ws&mws=getByPage&page=1&limit=20";
     }
 
     @Override

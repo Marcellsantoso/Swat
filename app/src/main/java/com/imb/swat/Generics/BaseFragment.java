@@ -158,7 +158,12 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
 
     public void setFragment(Fragment frag, int resParent) {
         if (getHome() != null)
-            getHome().setFragment(resParent, frag);
+            getHome().setFragment(frag, resParent);
+    }
+
+    public void setFragmentAnim(Fragment frag, int resIn, int resOut) {
+        if (getHome() != null)
+            getHome().setFragmentAnim(frag, resIn, resOut);
     }
 
     public BaseActivity getHome() {

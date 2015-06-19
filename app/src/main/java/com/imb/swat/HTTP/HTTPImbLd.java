@@ -35,9 +35,6 @@ public abstract class HTTPImbLd extends HTTPImb {
         if (ld == null)
             super.onFail(code, message);
         else {
-//            if (frag.pagination() && frag.paginationPage() == 1) {
-//                // Don't do anything here
-//            } else
                 ld.showError("", message);
         }
     }
@@ -48,8 +45,6 @@ public abstract class HTTPImbLd extends HTTPImb {
             JSONObject json = response.getContent();
             if (response.getStatusCode() == STATUS_SUCCESS) {
                 ld.hide();
-//                if (frag.pagination())
-//                    frag.paginationPage(frag.paginationPage() + 1);
                 return json;
             } else if (response.getStatusCode() == STATUS_TIMEOUT) {
                 if (shouldDisplayDialog && context != null) {

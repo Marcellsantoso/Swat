@@ -20,6 +20,9 @@ import com.imb.swat.R;
 import com.imb.swat.helper.Helper;
 import com.imb.swat.helper.HelperList;
 import com.imb.swat.views.ImageViewLoader;
+import com.viewpagerindicator.LinePageIndicator;
+
+import java.util.ArrayList;
 
 import roboguice.inject.InjectView;
 
@@ -28,16 +31,19 @@ import roboguice.inject.InjectView;
  */
 public class FragmentDetails extends BaseFragment {
     @InjectView(R.id.imgHeader)
-    ImageViewLoader imgHeader;
+    ImageViewLoader   imgHeader;
     @InjectView(R.id.sv)
-    ScrollView      sv;
+    ScrollView        sv;
     @InjectView(R.id.llDetails)
-    LinearLayout    llDetails;
+    LinearLayout      llDetails;
     @InjectView(R.id.pager)
-    ViewPager       vp;
+    ViewPager         vp;
+    @InjectView(R.id.indicator)
+    LinePageIndicator indicator;
     private MenuItem     menu;
     private PagerAdapter mPagerAdapter;
     private final int TAG_CALL = 1, TAG_EMAIL = 2, TAG_WEB = 3, TAG_MAP = 4;
+    private ArrayList<FragmentImage> al = new ArrayList<>();
 
     @Override
     public int layout() {
@@ -63,12 +69,17 @@ public class FragmentDetails extends BaseFragment {
             imgHeader.setVisibility(View.GONE);
             vp.setVisibility(View.VISIBLE);
 
-            mPagerAdapter = new ScreenSlidePagerAdapter(getActivity().getSupportFragmentManager());
+            if (mPagerAdapter == null)
+                mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
+
             vp.setAdapter(mPagerAdapter);
+            indicator.setViewPager(vp);
+            indicator.setSelectedColor(getHomeTab().toolbarColorBg());
         }
 
         setTitle(getData().getName());
         setToolbarOpacity(0);
+        getToolbar().setBackgroundColor(getHomeTab().toolbarColorBg());
 
         generateDetails("Details", getData().getDescLong());
         for (BeanAttr attr : getData().getAttr()) {
@@ -207,7 +218,8 @@ public class FragmentDetails extends BaseFragment {
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return new FragmentImage(getData().getImgMultiple().split(";")[position]);
+            al.add(new FragmentImage(getData().getImgMultiple().split(";")[position]));
+            return al.get(position);
         }
 
         @Override

@@ -75,11 +75,7 @@ public abstract class AdapterList
 
     public void convert(String text, String textFav) {
         try {
-//            text = HelperList.deparseText(text);
-//            textFav = HelperList.deparseText(textFav);
             JSONObject json = new JSONObject(text);
-
-            String server = json.getString("server");
             JSONArray jArr = json.getJSONArray(BaseConstants.RESULTS);
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject j = jArr.getJSONObject(i);
@@ -95,7 +91,6 @@ public abstract class AdapterList
 
     public void convertWithFilter(String text, String textFav) {
         try {
-            //            JSONObject json = new JSONObject(text);
             this.clear();
             if (!Helper.isEmpty(text)) {
                 JSONArray jArr = new JSONArray("[" + text + "]");
@@ -103,14 +98,7 @@ public abstract class AdapterList
                     JSONObject j = jArr.getJSONObject(i);
                     parseObj(j, textFav);
                 }
-                //                String[] arr = text.split(HelperList.TAG_CLOSE);
-                //                for (String id : arr) {
-                //                    id = HelperList.deparseText(id);
-                //
-                //                }
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -134,7 +122,7 @@ public abstract class AdapterList
             if (j.getString("img_main").length() > 0)
                 b.setImg(j.getString("img_main"));
             if (j.getString("img_multiple").length() > 0)
-                b.setImgMultiple(j.getString("img_multiple"));
+                b.setImgMultiple(b.getImg() + ";" + j.getString("img_multiple"));
 
             JSONArray attrs = j.getJSONArray("attrs");
             ArrayList<BeanAttr> alAttr = new ArrayList<>();
@@ -147,6 +135,12 @@ public abstract class AdapterList
                 alAttr.add(beanAttr);
             }
             b.setAttr(alAttr);
+
+            if (b.getPhone().contains("http:")) {
+                b.setImgMultiple(b.getImgMultiple().replace(b.getPhone(), "phone:" + b.getPhone()));
+                b.setPhone("");
+            }
+
             this.add(b);
         } catch (Exception e) {
             e.printStackTrace();

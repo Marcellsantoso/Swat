@@ -48,6 +48,7 @@ public class FragmentList extends BaseFragmentTab {
     @Override
     public void onRefresh() {
         super.onRefresh();
+        paginationPage(1);
         adapter().clear();
         loadItems();
     }
