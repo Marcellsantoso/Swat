@@ -18,6 +18,7 @@ public abstract class HTTPImb
     private Fragment       fragment;
     private boolean        displayProgress;
     private ProgressDialog mDialog;
+    private             int     page                  = 1;
     // ================================================================================
     // BaseConstants
     // ================================================================================
@@ -46,7 +47,7 @@ public abstract class HTTPImb
     public HTTPImb(Fragment frag, boolean displayProgress) {
         this.fragment = frag;
         this.displayProgress = displayProgress;
-        setDefaultValue();
+
     }
 
     public void setDefaultValue() {
@@ -68,8 +69,11 @@ public abstract class HTTPImb
 
     @Override
     protected void onPreExecute() {
-        if (displayProgress)
+        setDefaultValue();
+
+        if (displayProgress) {
             mDialog = ProgressDialog.show(fragment.getActivity(), "", LOADING);
+        }
     }
 
     @Override
@@ -121,7 +125,12 @@ public abstract class HTTPImb
     }
 
     public int page() {
-        return DEFAULT_PAGE;
+        return this.page;
+    }
+
+    public void setPage(int page) {
+        Log.d("testasd", Integer.toString(page));
+        this.page = page;
     }
 
     public abstract String url();

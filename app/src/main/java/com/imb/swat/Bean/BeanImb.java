@@ -1,5 +1,7 @@
 package com.imb.swat.Bean;
 
+import java.util.ArrayList;
+
 /**
  * Created by marcelsantoso.
  * <p/>
@@ -9,7 +11,8 @@ public class BeanImb extends Object {
     private int    id;
     private String name, img, imgMultiple, descShort, descLong, phone, email, address, url, raw;
     private double latitude, longitude;
-    private boolean fav;
+    private boolean             fav;
+    private ArrayList<BeanAttr> attr;
 
     public String getName() {
         return name;
@@ -137,26 +140,12 @@ public class BeanImb extends Object {
         return this;
     }
 
-    public class BeanAttr {
-        private String key, desc;
+    public ArrayList<BeanAttr> getAttr() {
+        return attr;
+    }
 
-        public String getDesc() {
-            return desc;
-        }
-
-        public BeanAttr setDesc(String desc) {
-            this.desc = desc;
-            return this;
-        }
-
-        public String getKey() {
-
-            return key;
-        }
-
-        public BeanAttr setKey(String key) {
-            this.key = key;
-            return this;
-        }
+    public BeanImb setAttr(ArrayList<BeanAttr> attr) {
+        this.attr = attr;
+        return this;
     }
 }

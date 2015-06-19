@@ -38,7 +38,6 @@ import android.widget.Toast;
 import com.imb.swat.R;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.WordUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.format.DateTimeFormat;
@@ -881,8 +880,8 @@ public class Helper {
     }
 
     /**
-     * Select an image and allow user to crop the image using requestCode {@link Helper} .REQUEST_IMAGE_CODE
-     * Implement {@link } .processImage / processPreview onActivityResult to process the image results and get the file
+     * Select an image and allow user to crop the image using requestCode {@link Helper} .REQUEST_IMAGE_CODE Implement
+     * {@link } .processImage / processPreview onActivityResult to process the image results and get the file
      *
      * @param activity , activity to handle the onActivityResult
      */
@@ -920,8 +919,8 @@ public class Helper {
     }
 
     /**
-     * Select an image and allow user to crop the image using requestCode {@link Helper} .REQUEST_IMAGE_CODE
-     * Implement {@link } .processImage / processPreview onActivityResult to process the image results and get the file
+     * Select an image and allow user to crop the image using requestCode {@link Helper} .REQUEST_IMAGE_CODE Implement
+     * {@link } .processImage / processPreview onActivityResult to process the image results and get the file
      *
      * @param fragment , fragment to handle the onActivityResult
      */
@@ -1056,8 +1055,34 @@ public class Helper {
         return formatter.format(d).replace(',', '.').replace('_', ',');
     }
 
-    public static String capitalize(String text) {
-        return WordUtils.capitalize(text);
+    public static String capitalizeWord(String text) {
+        StringBuffer res = new StringBuffer();
+
+        String[] strArr = text.split(" ");
+        for (String str : strArr) {
+            char[] stringArray = str.trim().toCharArray();
+            stringArray[0] = Character.toUpperCase(stringArray[0]);
+            str = new String(stringArray);
+
+            res.append(str).append(" ");
+        }
+        return res.toString().trim();
+    }
+
+    public static String capitalizeFirstLetter(String original) {
+        if (Helper.isEmpty(original))
+            return original;
+
+        original = original.toLowerCase();
+        return original.substring(0, 1).toUpperCase() + original.substring(1);
+    }
+
+    public static String breakLine(String text) {
+        if (Helper.isEmpty(text))
+            return text;
+
+        text = text.toLowerCase();
+        return text.replace("\\n", System.getProperty("line.separator"));
     }
 
     public static String getMobileNumber(Context ctx) {

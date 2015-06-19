@@ -2,20 +2,42 @@ package com.imb.swat.helper;
 
 import com.imb.swat.adapter.AdapterList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 /**
  * Created by marcelsantoso.
  * <p/>
  * 6/12/15
  */
 public class HelperList {
-    public static String parseId(int id) {
-        return "{" + Integer.toString(id) + "}";
+    public static final String TAG_OPEN  = "";
+    public static final String TAG_CLOSE = ",";
+
+    public static String parseText(String text) {
+        return TAG_OPEN + text + TAG_CLOSE;
     }
 
-    public static boolean addToFav(AdapterList adapter, int id) {
+    public static String deparseText(String text) {
+        if (text.contains(TAG_OPEN)) {
+            return text.replace(TAG_OPEN, "").replace(TAG_CLOSE
+                    , "");
+        }
+
+        return text;
+    }
+
+    public static boolean addToFav(AdapterList adapter, String rawObj) {
+        boolean isAdded = HelperList.addToFav(Preference.getInstance(adapter.getContext()), rawObj);
+        adapter.reload();
+
+        return isAdded;
+    }
+
+    public static boolean addToFav(Preference pref, String rawObj) {
         boolean isAdded;
-        String  data = Preference.getInstance(adapter.getContext()).getString(Preference.LIST_FAV);
-        String  text = HelperList.parseId(id);
+        String  data = pref.getString(Preference.LIST_FAV);
+        String  text = HelperList.parseText(rawObj);
         if (data.contains(text)) {
             data = data.replace(text, "");
             isAdded = false;
@@ -24,37 +46,36 @@ public class HelperList {
             isAdded = true;
         }
 
-        Preference.getInstance(adapter.getContext()).setString(Preference.LIST_FAV, data);
-        adapter.reload();
+        pref.setString(Preference.LIST_FAV, data);
 
         return isAdded;
     }
 
-    public static void addToRecent(Preference pref, int id) {
+    public static void addToRecent(Preference pref, String rawObj) {
         String data = pref.getString(Preference.LIST_RECENT);
-        String text = HelperList.parseId(id);
+        String text = HelperList.parseText(rawObj);
 
-
-        if (data.contains(text)) {
-            data = data.replace(text, "");
-        } else {
-            // Count how many records
-            int lastIndex = 0;
-            int count = 0;
-            while (lastIndex != -1) {
-                lastIndex = data.indexOf("{", lastIndex);
-                if (lastIndex != -1) {
-                    count++;
-                    lastIndex += "{".length();
+        int count;
+        if (!Helper.isEmpty(data)) {
+            try {
+                if (data.contains(text)) {
+                    data = data.replace((text), "");
                 }
-            }
-            if (count >= 5) {
-                data = data.substring(0, data.lastIndexOf("{") - 1);
+                JSONArray jArr = new JSONArray("[" + data + "]");
+                count = jArr.length();
+
+                if (count > 4) {
+                    jArr.remove(4);
+                }
+
+                data = jArr.toString().substring(1, jArr.toString().length() - 1);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
 
-        data = text + data;
 
+        data = text + data;
         pref.setString(Preference.LIST_RECENT, data);
     }
 

@@ -28,7 +28,8 @@ public abstract class BaseFragmentTab extends BaseFragment implements AdapterVie
     ListView           lv;
     @InjectView(R.id.sr)
     SwipeRefreshLayout sr;
-    MyReceiver r;
+    MyReceiver  r;
+    AdapterList adapter;
 
     @Override
     public int layout() {
@@ -44,6 +45,7 @@ public abstract class BaseFragmentTab extends BaseFragment implements AdapterVie
     public void setView(View view, Bundle savedInstanceState) {
         lv.setOnItemClickListener(this);
         lv.setOnItemLongClickListener(this);
+        lv.setOnScrollListener(this);
         lv.setAdapter(adapter());
     }
 
@@ -70,7 +72,7 @@ public abstract class BaseFragmentTab extends BaseFragment implements AdapterVie
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         super.onItemClick(parent, view, position, id);
-        HelperList.addToRecent(getPref(), ((BeanImb) adapter().getItem(position)).getId());
+        HelperList.addToRecent(getPref(), ((BeanImb) adapter().getItem(position)).getRaw());
         setFragment(getHomeTab().fragmentDetails().setData(((BeanImb) adapter().getItem(position))));
     }
 
@@ -87,7 +89,7 @@ public abstract class BaseFragmentTab extends BaseFragment implements AdapterVie
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                HelperList.addToFav(adapter(), bean.getId());
+                HelperList.addToFav(adapter(), bean.getRaw());
             }
         });
         builder.show();

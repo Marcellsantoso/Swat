@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.imb.swat.Bean.BeanAttr;
 import com.imb.swat.Bean.BeanImb;
 import com.imb.swat.R;
 import com.imb.swat.generics.BaseConstants;
@@ -64,45 +65,26 @@ public abstract class AdapterList
             holder.btnFav.setVisibility(View.GONE);
         else {
             holder.btnFav.setVisibility(View.VISIBLE);
-            holder.btnFav.setOnClickListener(new ListenerFav(bean.getId(), this));
+            holder.btnFav.setOnClickListener(new ListenerFav(bean.getRaw(), this));
         }
     }
 
+    //    public void convert(String text, String textFav) {
+    //        convertWithFilter(text, textFav);
+    //    }
+
     public void convert(String text, String textFav) {
-        convertWithFilter(text, textFav, null);
-    }
-
-    public void convertWithFilter(String text, String textFav, String filter) {
         try {
-            this.clear();
-
+//            text = HelperList.deparseText(text);
+//            textFav = HelperList.deparseText(textFav);
             JSONObject json = new JSONObject(text);
 
             String server = json.getString("server");
             JSONArray jArr = json.getJSONArray(BaseConstants.RESULTS);
             for (int i = 0; i < jArr.length(); i++) {
                 JSONObject j = jArr.getJSONObject(i);
-                BeanImb b = new BeanImb();
-                b.setId(j.getInt("id"));
-                b.setRaw(j.toString());
-                if (filter == null || filter.contains(HelperList.parseId(b.getId()))) {
-                    b.setName(j.getString("name"));
-                    b.setDescShort(j.getString("desc_short"));
-                    b.setDescLong(j.getString("desc_long"));
-                    b.setLatitude(j.getDouble("latitude"));
-                    b.setLongitude(j.getDouble("longitude"));
-                    b.setPhone(j.getString("phone"));
-                    b.setEmail(j.getString("email"));
-                    b.setAddress(j.getString("address"));
-                    b.setUrl(j.getString("url"));
-                    b.setFav(textFav.contains(HelperList.parseId(b.getId())));
-                    if (j.getString("img_main").length() > 0)
-                        b.setImg(server + j.getString("img_main"));
-                    if (j.getString("img_multiple").length() > 0)
-                        b.setImgMultiple(server + j.getString("img_multiple").replace(";", ";" + server));
+                parseObj(j, textFav);
 
-                    this.add(b);
-                }
             }
 
             this.notifyDataSetChanged();
@@ -111,50 +93,62 @@ public abstract class AdapterList
         }
     }
 
-    public void convertWithFilterSort(String text, String textFav, String filter) {
+    public void convertWithFilter(String text, String textFav) {
         try {
-            if (Helper.isEmpty(filter) || Helper.isEmpty(text))
-                return;
-
+            //            JSONObject json = new JSONObject(text);
             this.clear();
-
-            JSONObject json = new JSONObject(text);
-
-            String server = json.getString("server");
-            JSONArray jArr = json.getJSONArray(BaseConstants.RESULTS);
-
-            filter = filter.replace("{", "").replace("}", ",");
-            String[] arr = filter.split(",");
-            for (String id : arr) {
+            if (!Helper.isEmpty(text)) {
+                JSONArray jArr = new JSONArray("[" + text + "]");
                 for (int i = 0; i < jArr.length(); i++) {
                     JSONObject j = jArr.getJSONObject(i);
-                    BeanImb b = new BeanImb();
-                    b.setId(j.getInt("id"));
-                    b.setRaw(j.toString());
-                    if (Integer.parseInt(id) == b.getId()) {
-                        b.setName(j.getString("name"));
-                        b.setDescShort(j.getString("desc_short"));
-                        b.setDescLong(j.getString("desc_long"));
-                        b.setLatitude(j.getDouble("latitude"));
-                        b.setLongitude(j.getDouble("longitude"));
-                        b.setPhone(j.getString("phone"));
-                        b.setEmail(j.getString("email"));
-                        b.setAddress(j.getString("address"));
-                        b.setUrl(j.getString("url"));
-                        b.setFav(textFav.contains(HelperList.parseId(b.getId())));
-                        if (j.getString("img_main").length() > 0)
-                            b.setImg(server + j.getString("img_main"));
-                        if (j.getString("img_multiple").length() > 0)
-                            b.setImgMultiple(server + j.getString("img_multiple").replace(";", ";" + server));
-
-                        this.add(b);
-                    }
+                    parseObj(j, textFav);
                 }
+                //                String[] arr = text.split(HelperList.TAG_CLOSE);
+                //                for (String id : arr) {
+                //                    id = HelperList.deparseText(id);
+                //
+                //                }
             }
 
 
-            this.notifyDataSetChanged();
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void parseObj(JSONObject j, String fav) {
+        try {
+            BeanImb b = new BeanImb();
+            b.setId(j.getInt("id"));
+            b.setRaw(j.toString());
+            b.setName(Helper.capitalizeWord(Helper.breakLine(j.getString("name"))));
+            b.setDescShort(j.getString("desc_short"));
+            b.setDescLong(j.getString("desc_long"));
+            b.setLatitude(j.getDouble("latitude"));
+            b.setLongitude(j.getDouble("longitude"));
+            b.setPhone(j.getString("phone"));
+            b.setEmail(j.getString("email"));
+            b.setAddress(Helper.capitalizeWord(Helper.breakLine(j.getString("address"))));
+            b.setUrl(j.getString("url"));
+            b.setFav(fav.contains(HelperList.parseText(b.getRaw())));
+            if (j.getString("img_main").length() > 0)
+                b.setImg(j.getString("img_main"));
+            if (j.getString("img_multiple").length() > 0)
+                b.setImgMultiple(j.getString("img_multiple"));
+
+            JSONArray attrs = j.getJSONArray("attrs");
+            ArrayList<BeanAttr> alAttr = new ArrayList<>();
+            for (int k = 0; k < attrs.length(); k++) {
+                JSONObject attr = attrs.getJSONObject(k);
+                BeanAttr beanAttr = new BeanAttr();
+                beanAttr.setKey(attr.getString("title"));
+                beanAttr.setDesc(attr.getString("content"));
+
+                alAttr.add(beanAttr);
+            }
+            b.setAttr(alAttr);
+            this.add(b);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -169,17 +163,17 @@ public abstract class AdapterList
     }
 
     public class ListenerFav implements View.OnClickListener {
-        int         id;
+        String      rawObj;
         AdapterList adapter;
 
-        public ListenerFav(int id, AdapterList adapter) {
-            this.id = id;
+        public ListenerFav(String rawObj, AdapterList adapter) {
+            this.rawObj = rawObj;
             this.adapter = adapter;
         }
 
         @Override
         public void onClick(View v) {
-            HelperList.addToFav(adapter, id);
+            HelperList.addToFav(adapter, rawObj);
             AdapterList.this.notifyDataSetChanged();
         }
     }

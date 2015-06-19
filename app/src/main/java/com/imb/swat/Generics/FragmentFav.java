@@ -21,8 +21,7 @@ public class FragmentFav extends BaseFragmentTab {
         adapter = new AdapterList(getActivity()) {
             @Override
             public void reload() {
-                adapter.convertWithFilter(getPref().getString(Preference.LIST_DATA),
-                                          getPref().getString(Preference.LIST_FAV),
+                adapter.convertWithFilter(getPref().getString(Preference.LIST_FAV),
                                           getPref().getString(Preference.LIST_FAV));
             }
         };

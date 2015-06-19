@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 
 import com.imb.swat.Bean.BeanImb;
 import com.imb.swat.R;
+import com.imb.swat.helper.Constants;
 import com.imb.swat.helper.Preference;
 
 import java.lang.reflect.Field;
@@ -37,6 +38,8 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
                                                                    SwipeRefreshLayout.OnRefreshListener {
     private static final Field   sChildFragmentManagerField;
     private              BeanImb bean;
+    private int mVisibleCount, mVisibleFirst, mPage = 1;
+    private boolean doPagination;
 
     public BaseFragment() {
 
@@ -206,12 +209,6 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
         getToolbar().setTitle(resTitle);
     }
 
-    public void setScrollListener(ScrollView sv) {
-        this.sv = sv;
-
-        sv.setOnTouchListener(this);
-    }
-
     // ================================================================================
     // Listeners
     // ================================================================================
@@ -237,20 +234,73 @@ public abstract class BaseFragment extends RoboFragment implements View.OnClickL
 
     }
 
+    // ================================================================================
+    // Scroll Listener
+    // ================================================================================
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // TODO Auto-generated method stub
-
+        if (scrollState == SCROLL_STATE_IDLE && paginationCount() <= mVisibleCount + mVisibleFirst && pagination()) {
+            onPagination(paginationPage());
+        }
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
                          int totalItemCount) {
-        View v = view.getChildAt(0);
-        int scrollY = (v == null) ? 0 : -v.getTop() + view.getFirstVisiblePosition()
-                * v.getHeight();
+        this.mVisibleCount = visibleItemCount;
+        this.mVisibleFirst = firstVisibleItem;
 
-        setToolbarOpacity(scrollY);
+        if (transparentActionbar()) {
+            View v = view.getChildAt(0);
+            int scrollY = (v == null) ? 0 : -v.getTop() + view.getFirstVisiblePosition()
+                    * v.getHeight();
+
+            setToolbarOpacity(scrollY);
+        }
+    }
+
+    /**
+     * If this sets to true, don't forget to implement pagination count, paginationPage, paginationLimit, and
+     * onPagination
+     *
+     * @return
+     */
+    public boolean pagination() {
+        return this.doPagination;
+    }
+
+    public int paginationCount() {
+        return 0;
+    }
+
+    public void paginationPage(int page) {
+        this.mPage = page;
+
+        if (paginationCount() < page * paginationLimit()) {
+            this.doPagination = false;
+        }
+    }
+
+    public int paginationPage() {
+        return this.mPage;
+    }
+
+    public int paginationLimit() {
+        return Constants.DEFAULT_LIMIT;
+    }
+
+    public void onPagination(int page) {
+        paginationPage(paginationPage() + 1);
+    }
+
+    public boolean transparentActionbar() {
+        return false;
+    }
+
+    public void setScrollListener(ScrollView sv) {
+        this.sv = sv;
+
+        sv.setOnTouchListener(this);
     }
 
     @Override

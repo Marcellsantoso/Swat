@@ -40,6 +40,9 @@ public class Constants {
     public static final String NO                    = "N";
     public static final String PLAY_STORE_LINK       = "https://play.google.com/store/apps/details?id=";
     public static final float  PREVIEW_SIZE          = 250;
+    public static final int    DEFAULT_ZOOM_MAPS     = 13;
+    public static final int    DEFAULT_PAGE          = 1;
+    public static final int    DEFAULT_LIMIT         = 10;
     // ================================================================================
     // Keys
     // ================================================================================

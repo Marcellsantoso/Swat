@@ -1,8 +1,8 @@
 package com.imb.swat.http;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 
+import com.imb.swat.generics.BaseFragment;
 import com.imb.swat.views.LoadingCompound;
 
 import org.json.JSONObject;
@@ -12,19 +12,34 @@ import org.json.JSONObject;
  */
 public abstract class HTTPImbLd extends HTTPImb {
     private LoadingCompound ld;
+    private BaseFragment    frag;
 
-    public HTTPImbLd(Fragment frag, LoadingCompound ld) {
+    public HTTPImbLd(BaseFragment frag, LoadingCompound ld) {
         super(frag, false);
+        this.frag = frag;
         this.ld = ld;
-        this.ld.showLoading();
+
+        if (frag.pagination()) {
+            setPage(frag.paginationPage());
+        }
+
+        // Handle loading compound behavior
+        if (frag.pagination() && frag.paginationPage() >= 1) {
+            this.ld.hide();
+        } else
+            this.ld.showLoading();
     }
 
     @Override
     public void onFail(int code, String message) {
         if (ld == null)
             super.onFail(code, message);
-        else
-            ld.showError("", message);
+        else {
+//            if (frag.pagination() && frag.paginationPage() == 1) {
+//                // Don't do anything here
+//            } else
+                ld.showError("", message);
+        }
     }
 
     @Override
@@ -33,6 +48,8 @@ public abstract class HTTPImbLd extends HTTPImb {
             JSONObject json = response.getContent();
             if (response.getStatusCode() == STATUS_SUCCESS) {
                 ld.hide();
+//                if (frag.pagination())
+//                    frag.paginationPage(frag.paginationPage() + 1);
                 return json;
             } else if (response.getStatusCode() == STATUS_TIMEOUT) {
                 if (shouldDisplayDialog && context != null) {

@@ -1,4 +1,8 @@
 <resources>
+    <!-- Keys -->
+    <string name="google_key">AIzaSyB6J92YdaWOQQ3UbjKnArg5umbzALDMjO4</string>
+
+    <!-- Others -->
     <string name="app_name">Swat</string>
 
     <string name="hello_world">Hello world!</string>
@@ -40,6 +44,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="update_success">Update success</string>
+    <string name="favourite">Favourite</string>
     <string name="title_activity_base_activity_tab">BaseActivityTab</string>
 
     <!-- Frag Details -->

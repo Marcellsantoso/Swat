@@ -15,24 +15,24 @@ import org.json.JSONObject;
  * A simple {@link Fragment} subclass.
  */
 public class FragmentList extends BaseFragmentTab {
-    AdapterList adapter;
-
     @Override
     public void setView(View view, Bundle savedInstanceState) {
         if (adapter == null) {
             adapter = new AdapterList(getActivity()) {
                 @Override
                 public void reload() {
-                    adapter.convert(getPref().getString(Preference.LIST_DATA),
-                                    getPref().getString(Preference.LIST_FAV));
+//                    adapter.convert(getPref().getString(Preference.LIST_DATA),
+//                                    getPref().getString(Preference.LIST_FAV));
 
                 }
             };
             loadItems();
         } else {
             ld.hide();
+//            adapter.clear();
+//            adapter.reload();
+            adapter.notifyDataSetChanged();
         }
-        adapter.reload();
 
         sr.setOnRefreshListener(this);
         UIHelper.setRefreshColor(sr);
@@ -48,6 +48,23 @@ public class FragmentList extends BaseFragmentTab {
     @Override
     public void onRefresh() {
         super.onRefresh();
+        adapter().clear();
+        loadItems();
+    }
+
+    @Override
+    public boolean pagination() {
+        return true;
+    }
+
+    @Override
+    public int paginationCount() {
+        return adapter().getCount();
+    }
+
+    @Override
+    public void onPagination(int page) {
+        super.onPagination(page);
         loadItems();
     }
 
@@ -56,8 +73,7 @@ public class FragmentList extends BaseFragmentTab {
             @Override
             public void onSuccess(JSONObject j) {
                 sr.setRefreshing(false);
-                getPref().setString(Preference.LIST_DATA, j.toString());
-                adapter.clear();
+//                getPref().setString(Preference.LIST_DATA, j.toString());
                 adapter.convert(j.toString(), getPref().getString(Preference.LIST_FAV));
             }
 
@@ -71,6 +87,7 @@ public class FragmentList extends BaseFragmentTab {
                 super.onFail(code, message);
                 sr.setRefreshing(false);
             }
+
         }.execute();
     }
 
